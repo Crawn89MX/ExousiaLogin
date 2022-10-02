@@ -1,0 +1,9 @@
+django
+djangorestframework
+markdown
+django-filter
+django-environ
+django-extensions
+django[bcrypt]
+# psycopg2-binary
+# gunicorn
