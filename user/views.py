@@ -37,7 +37,7 @@ class UserViewSet(viewsets.ModelViewSet):
             data['password'] = 'Anonymous'
             return Response({"message": "Data was updated successfully", "data": data})
         except Exception as e:
-            return Response({"message": "Without credentials", "Error": str(e)})
+            return Response({"message": "Without credentials", "error": str(e)})
 
     def destroy(self, request, pk=None):
         try:
@@ -46,7 +46,7 @@ class UserViewSet(viewsets.ModelViewSet):
             player.delete()
             return Response({"message": "Data was deleted successfully"})
         except Exception as e:
-            return Response({"message": "Without credentials", "Error": str(e)})
+            return Response({"message": "Without credentials", "error": str(e)})
 
 @api_view(['GET', 'POST'])
 def login(request):
@@ -56,15 +56,16 @@ def login(request):
 
     #If method is POST continue...
     try:
+        print(request.data)
         player = User.objects.get(email=request.data["email"])
         matchThePasswords = check_password(request.data["password"], player.password)
 
         if not matchThePasswords:
-            return Response('Invalid User', status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "Invalid User", "error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = UserSerializer(player).data
         serializer['password'] = 'Anonymous'
         
-        return Response(serializer)
+        return Response({"player": f"{serializer}", "message": "Login sucessfully", "error": ''})
     except Exception as e:
-        return Response({"message": "Without credentials", "Error": str(e)})
+        return Response({"message": "User or password incorrect", "error": str(e)})

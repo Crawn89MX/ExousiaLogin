@@ -8,6 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self,validated_data):
         user = User(**validated_data)
+        user.password = 'temp'
         user.set_password(validated_data['password'])
         # Is not necessary to know the data inside of the token, the only function is to be secret
         user.set_token(validated_data['email']) 

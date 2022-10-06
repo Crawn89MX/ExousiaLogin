@@ -2,7 +2,7 @@ from django.db import models
 from user.models import User
 
 class Score(models.Model):
-    id = models.BigIntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     idUser = models.ForeignKey(User, on_delete=models.CASCADE)
     score = models.BigIntegerField()
     karma = models.IntegerField()
